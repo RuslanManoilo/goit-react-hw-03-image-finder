@@ -1,18 +1,29 @@
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { ImSearch } from "react-icons/im";
+import * as Yup from 'yup';
 
-export const Searchbar = () => {
+const formSchema = Yup.object().shape({
+    searchValue: Yup.string()
+        .min(2, 'Too Short!')
+        .required('This field is required!'),
+});
+
+export const Searchbar = ({getInput}) => {
     return (
         <Formik
             initialValues={{
                 searchValue: '',
             }}
-            onSubmit={values => {
-                console.log(values);
+            onSubmit={(values, actions) => {
+                getInput(values.searchValue);
+                actions.resetForm();
             }}
+            validationSchema={formSchema}
         >
             <Form>
-                <button type="submit"><ImSearch /></button>
+                <button type="submit">
+                    <ImSearch />
+                </button>
 
                 <Field
                     name="searchValue"
@@ -21,6 +32,7 @@ export const Searchbar = () => {
                     autoFocus
                     placeholder="Search images and photos"
                 />
+                <ErrorMessage name="name" component="div" />
 
             </Form>
         </Formik>
