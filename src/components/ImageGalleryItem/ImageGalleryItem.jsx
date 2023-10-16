@@ -1,5 +1,6 @@
 import { ItemModal } from "components/Modal/Modal";
 import { Component } from "react";
+import { GalleryItem, ItemImage } from "./ImageGalleryItem.styled";
 
 
 class ImageGalleryItem extends Component {
@@ -20,17 +21,17 @@ class ImageGalleryItem extends Component {
         const { isModalOpen } = this.state;
         
         return (
-            <div>
-                <li onClick={this.openModal}>
-                    <img src={webformatURL} alt={tags}/>
-                </li>
+            <>
+                <GalleryItem onClick={this.openModal}>
+                    <ItemImage src={webformatURL} alt={tags}/>
+                </GalleryItem>
             
                 <ItemModal
                     largeImage={largeImageURL}
                     isModalOpen={isModalOpen}
                     closeModal={this.closeModal}
                 />
-            </div>
+            </>
         );
     };
 };

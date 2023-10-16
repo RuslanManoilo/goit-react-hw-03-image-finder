@@ -4,6 +4,7 @@ import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import { ErrorMessage, Loader } from "./Loader/Loader";
 import { LoadMoreBtn } from "./Button/Button";
+import { Wrapper } from "./GlobalStyle";
 
 class App extends Component {
   state = {
@@ -53,13 +54,13 @@ class App extends Component {
   render() {
     const { images, loading, loadMore, error } = this.state;
     return (
-      <div>
+      <Wrapper>
         <Searchbar getInput={this.getInput} />
           {loading && <Loader />}
         <ImageGallery images={images} />
           {error && <ErrorMessage />}
         {loadMore && <LoadMoreBtn onLoadMore={this.getNewPage} />}
-      </div>
+      </Wrapper>
     );
   }
 };

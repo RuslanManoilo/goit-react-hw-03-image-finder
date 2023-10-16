@@ -1,14 +1,23 @@
 import Modal from 'react-modal';
+import { ImgModal } from './Modal.styled';
 Modal.setAppElement('#root');
 
 const customStyles = {
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
+    maxWidth: '64%',
+    maxHeight: '86%',
+    margin: 'auto',
+    inset: '1px',
+    padding: '0',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100vw',
+    height: '100vh',
+    zIndex: '1200',
   },
 };
 
@@ -20,8 +29,7 @@ export const ItemModal = ({isModalOpen, closeModal, largeImage}) => {
             style={customStyles}
             contentLabel="Example Modal"
         >
-            <img src={largeImage} alt="" />
-            <button onClick={closeModal}>X</button>
+            <ImgModal src={largeImage} alt="" width={480} />
         </Modal>
     );
 };

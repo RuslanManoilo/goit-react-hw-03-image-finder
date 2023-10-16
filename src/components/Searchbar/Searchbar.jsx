@@ -1,6 +1,7 @@
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import { ImSearch } from "react-icons/im";
 import * as Yup from 'yup';
+import { ErrorNotification, SearchBar, SearchBtn, SearchForm, SearchFormInput } from './Searchbar.styled';
 
 const formSchema = Yup.object().shape({
     searchValue: Yup.string()
@@ -10,31 +11,33 @@ const formSchema = Yup.object().shape({
 
 export const Searchbar = ({getInput}) => {
     return (
-        <Formik
-            initialValues={{
-                searchValue: '',
-            }}
-            onSubmit={(values, actions) => {
-                getInput(values.searchValue);
-                actions.resetForm();
-            }}
-            validationSchema={formSchema}
-        >
-            <Form>
-                <button type="submit">
-                    <ImSearch />
-                </button>
+        <SearchBar>
+            <Formik
+                initialValues={{
+                    searchValue: '',
+                }}
+                onSubmit={(values, actions) => {
+                    getInput(values.searchValue);
+                    actions.resetForm();
+                }}
+                validationSchema={formSchema}
+            >
+                <SearchForm>
+                    <SearchBtn type="submit">
+                        <ImSearch />
+                    </SearchBtn>
 
-                <Field
-                    name="searchValue"
-                    type="text"
-                    autoComplete="off"
-                    autoFocus
-                    placeholder="Search images and photos"
-                />
-                <ErrorMessage name="name" component="div" />
+                    <SearchFormInput
+                        name="searchValue"
+                        type="text"
+                        autoComplete="off"
+                        autoFocus
+                        placeholder="Search images and photos"
+                    />
+                    <ErrorNotification name="searchValue" component="div" />
 
-            </Form>
-        </Formik>
+                </SearchForm>
+            </Formik>
+        </SearchBar>
     );
 };
