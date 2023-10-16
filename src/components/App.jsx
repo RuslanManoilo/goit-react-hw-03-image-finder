@@ -2,7 +2,7 @@ import { Component } from "react";
 import { fetchImages } from "./Api";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-import { Loader } from "./Loader/Loader";
+import { ErrorMessage, Loader } from "./Loader/Loader";
 import { LoadMoreBtn } from "./Button/Button";
 
 class App extends Component {
@@ -16,38 +16,33 @@ class App extends Component {
   };
 
   async componentDidUpdate(_, prevState) {
-    try {
-      console.log('second');
-      const { input, page } = this.state;
-
-      this.setState({ loading: true, error: false });
-
-      if (prevState.input !== input || prevState.page !== page) {
+    const { input, page } = this.state;
+    if (prevState.input !== input || prevState.page !== page) {
+      try {
+        this.setState({ loading: true, error: false });
 
         const newImages = await fetchImages(input, page);
         const { hits, totalHits } = newImages;
 
-        this.setState({
+        this.setState(prevState => ({
           images: [...prevState.images, ...hits],
-          loadMore: this.state.page < Math.ceil(totalHits / 12 ),
-        })
-
+          loadMore: this.state.page < Math.ceil(totalHits / 12),
+        }));
+      } catch (error) {
+        this.setState({ error: true })
+      } finally {
+        this.setState({ loading: false })
       }
-    } catch (error) {
-
-    } 
+    };
   }
 
   getInput = value => {
-    console.log('first');
-    if (value !== this.state.input) {
-      this.setState({
-        images: [],
-        input: value,
-        page: 1,
-      })
-    }
-  }
+    this.setState({
+      images: [],
+      input: value,
+      page: 1,
+    })
+  };
 
   getNewPage = () => {
     this.setState((prevState) => ({
@@ -60,10 +55,9 @@ class App extends Component {
     return (
       <div>
         <Searchbar getInput={this.getInput} />
-        {loading && <Loader />}
-        {images.length > 0 && <ImageGallery images={images} />}
-
-        {error && <b>No internet connection!</b>}
+          {loading && <Loader />}
+        <ImageGallery images={images} />
+          {error && <ErrorMessage />}
         {loadMore && <LoadMoreBtn onLoadMore={this.getNewPage} />}
       </div>
     );

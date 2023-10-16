@@ -12,3 +12,9 @@ export const Loader = () => {
         />
     );
 };
+
+export const ErrorMessage = () => {
+    return (
+        <p>No internet connection!</p>
+    );
+};
